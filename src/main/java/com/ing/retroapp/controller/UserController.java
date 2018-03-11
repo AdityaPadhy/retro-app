@@ -3,12 +3,16 @@ package com.ing.retroapp.controller;
 import com.ing.retroapp.model.DeleteUsers;
 import com.ing.retroapp.model.Sort;
 import com.ing.retroapp.model.User;
+import com.ing.retroapp.repository.UserCrudRepository;
 import com.ing.retroapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by D-RB15LP on 13/02/2018.
@@ -19,6 +23,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserCrudRepository userCrudRepository;
+
     @GetMapping(value = "/users", produces = "application/json")
     public Flux<User> getAllUsers() {
         return userRepository.findAll();
@@ -26,7 +33,7 @@ public class UserController {
 
     @PutMapping(value = "/add")
     public Flux<User> addUser(@RequestBody User user) {
-        userRepository.save(user);
+        userCrudRepository.save(user);
         return getAllUsers();
     }
 
@@ -43,11 +50,9 @@ public class UserController {
         return users;
     }
 
-    @DeleteMapping(value = "/delete")
-    @Transactional
+    @PostMapping(value = "/delete")
     public void deleteUsers(@RequestBody DeleteUsers users) {
-        Mono<User> user = userRepository.findById(users.getIds().get(0));
-        for (String id : users.getIds())
-        userRepository.deleteById(id);
+         userCrudRepository.deleteByIdIn(users.getIds());
     }
+
 }
