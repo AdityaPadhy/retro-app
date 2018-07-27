@@ -38,14 +38,18 @@ public class UserController {
     }
 
     @PostMapping(value = "/sort")
-    public Flux<User> sortUser(@RequestBody Sort sort) {
-        Flux<User> users = getAllUsers().sort((o1, o2) -> {
-            if(sort.getSortKey().equalsIgnoreCase("asc")) {
-                return o1.getName().compareTo(o2.getName());
-            } else {
-                return o2.getName().compareTo(o1.getName());
-            }
-        });
+    public List<User> sortUser(@RequestBody Sort sort) {
+
+        List<User> users = userCrudRepository.findAll();
+        if (sort.getSortKey() != null) {
+            users.sort((o1, o2) -> {
+                if(sort.getSortKey().equalsIgnoreCase("asc")) {
+                    return o1.getName().compareTo(o2.getName());
+                } else {
+                    return o2.getName().compareTo(o1.getName());
+                }
+            });
+        }
 
         return users;
     }
