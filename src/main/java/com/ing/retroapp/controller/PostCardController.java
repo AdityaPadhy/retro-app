@@ -22,7 +22,7 @@ public class PostCardController {
         return postCardRepository.findAll();
     }
 
-    @PostMapping(value = "/add")
+    @PutMapping(value = "/add")
     public void addCard(@RequestBody PostCard card) {
         postCardRepository.save(card);
     }

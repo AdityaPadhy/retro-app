@@ -1,5 +1,6 @@
 package com.ing.retroapp.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Created by D-RB15LP on 20/04/2018.
  */
 @Document(collection = "postcard")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostCard {
 
     @Id
@@ -24,7 +26,19 @@ public class PostCard {
 
     private Boolean isSelected;
 
+    private Boolean isMarkedDone;
+
+    private Boolean isMarkedAction;
+
     private String userName;
+
+    public Boolean getIsMarkedAction() {
+        return isMarkedAction;
+    }
+
+    public void setIsMarkedAction(Boolean isMarkedAction) {
+        this.isMarkedAction = isMarkedAction;
+    }
 
     public String getUserName() {
         return userName;
@@ -88,5 +102,13 @@ public class PostCard {
 
     public void setIsSelected(Boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    public Boolean getIsMarkedDone() {
+        return isMarkedDone;
+    }
+
+    public void setIsMarkedDone(Boolean isMarkedDone) {
+        this.isMarkedDone = isMarkedDone;
     }
 }
